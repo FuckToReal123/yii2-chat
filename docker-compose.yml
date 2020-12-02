@@ -1,0 +1,57 @@
+version: '3.5'
+
+services:
+
+  nginx:
+    build: ./docker/nginx
+    ports:
+      - 8092:80
+    volumes:
+      - ./:/var/www/yii2-chat/:delegated
+    depends_on:
+      - php-fpm
+    restart: always
+
+  php-fpm:
+    build:
+      context: ./
+      dockerfile: ./docker/php-fpm/Dockerfile
+    volumes:
+      - ./:/var/www/yii2-chat/:delegated
+    env_file:
+      - .env
+    depends_on:
+      - mariadb
+    restart: always
+
+  composer:
+    build: ./docker/composer
+    volumes:
+      - ./:/var/www/yii2-chat/:delegated
+    command: composer install --ignore-platform-reqs
+
+  mariadb:
+    build: ./docker/mariadb
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - db_data:/var/lib/mysql
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      TZ: ${TZ}
+    restart: always
+    ports:
+      - 127.0.0.1:3306:3306
+
+  redis:
+    image: redis:latest
+    depends_on:
+      - nginx
+      - php-fpm
+
+volumes:
+  db_data:

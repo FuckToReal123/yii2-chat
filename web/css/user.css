@@ -1,0 +1,13 @@
+.user-list {
+    display: table;
+    border-collapse: collapse;
+}
+
+.user-data {
+    display: table-row;
+}
+
+.user-data div {
+    display: table-cell;
+    border: 1px solid black;
+}
