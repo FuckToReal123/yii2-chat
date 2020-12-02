@@ -36,6 +36,11 @@ AppAsset::register($this);
       $menuItems[] = ['label' => 'Вход', 'url' => ['/site/login']];
       $menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
     } else {
+        if (Yii::$app->user->can('administer')){
+            $menuItems[] = ['label' => 'Сообщения', 'url' => ['/message/']];
+            $menuItems[] = ['label' => 'Некорректные сообщения', 'url' => ['/message/incorrect']];
+            $menuItems[] = ['label' => 'Пользователи', 'url' => ['/user/']];
+        }
       $menuItems[] = '<li>'
           . Html::beginForm(['/site/logout'], 'post')
           . Html::submitButton(
