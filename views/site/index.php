@@ -11,8 +11,9 @@ use yii\widgets\Pjax;
 $this->title = 'Yii2-chat';
 ?>
 
-<?php Pjax::begin(['id' => 'live-chat']); ?>
+
 <div class="chat-container container col-12">
+    <?php Pjax::begin(['id' => 'live-chat']); ?>
   <div class="chat">
       <?php foreach ($messages as $message): ?>
           <?php if (Yii::$app->user->can('readMessages')): ?>
@@ -25,16 +26,16 @@ $this->title = 'Yii2-chat';
       <?php endforeach; ?>
   </div>
 
-    <?= $this->render('parts/_sendForm', ['model' => $messageFormModel]) ?>
-</div>
-
-<?php
-$this->registerJs(
-    '$("document").ready(function(){
+    <?php
+    $this->registerJs(
+        '$("document").ready(function(){
             setTimeout(function(){
                 $.pjax.reload({container:"#live-chat"});
             },6000);
         });'
-);?>
+    );?>
 
-<?php Pjax::end(); ?>
+    <?php Pjax::end(); ?>
+
+    <?= $this->render('parts/_sendForm', ['model' => $messageFormModel]) ?>
+</div>
