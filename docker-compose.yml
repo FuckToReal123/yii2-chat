@@ -22,6 +22,7 @@ services:
       - .env
     depends_on:
       - mariadb
+      - composer
     restart: always
 
   composer:
@@ -29,6 +30,7 @@ services:
     volumes:
       - ./:/var/www/yii2-chat/:delegated
     command: composer install --ignore-platform-reqs
+    restart: always
 
   mariadb:
     build: ./docker/mariadb
