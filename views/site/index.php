@@ -33,7 +33,7 @@ $this->registerJs(
     '$("document").ready(function(){
             setTimeout(function(){
                 $.pjax.reload({container:"#live-chat"});
-            },3000);
+            },6000);
         });'
 );?>
 
