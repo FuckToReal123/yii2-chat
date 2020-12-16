@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use yii\helpers\Html;
 
 /**
  * Class MessageForm
@@ -28,12 +29,26 @@ class MessageForm extends Model
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function beforeValidate()
+    {
+        $this->text = Html::encode($this->text);
+
+        return parent::beforeValidate();
+    }
+
+    /**
      * Отправляет сообщение в чат
      *
      * @return Message|null
      */
     public function send()
     {
+        if (!$this->validate()) {
+            return null;
+        }
+
         $model = new Message();
 
         $model->text = $this->text;

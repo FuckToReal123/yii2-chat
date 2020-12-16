@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use yii\helpers\Html;
 
 /**
  * Class SignupForm
@@ -45,6 +46,18 @@ class SignupForm extends Model
             ],
             [['password'], 'string', 'min' => 6],
         ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function beforeValidate()
+    {
+        $this->username = Html::encode($this->username);
+        $this->email = Html::encode($this->email);
+        $this->password = Html::encode($this->password);
+
+        return parent::beforeValidate();
     }
 
     /**
